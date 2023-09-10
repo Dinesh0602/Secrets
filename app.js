@@ -30,7 +30,7 @@ app.use(passport.session());
 
 //PA7L5RU43WsKSrOn
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb+srv://buruboyinadinesh:PA7L5RU43WsKSrOn@cluster0.pzzwimg.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect(process.env.DATABASE_URL);
 
 const userSchema=new mongoose.Schema({
     email:String,
@@ -65,7 +65,7 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
    
     User.findOrCreate({ googleId: profile.id },{name:profile.displayName}, function (err, user) {
-        console.log(user);
+        
       return cb(err, user);
     });
   }
@@ -77,7 +77,6 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:3000/auth/facebook/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
       return cb(err, user);
     });
@@ -143,7 +142,7 @@ app.get('/submit', function(req, res) {
 })
 
 app.post('/submit', function(req, res) {
-    console.log(req.user);
+   
 User.findById(req.user._id,function(err, user) {
     if(err){
         console.log(err);
@@ -198,6 +197,6 @@ app.post('/login', function(req, res){
 
 
 
-app.listen(3000,function(){
+app.listen(process.env.PORT,function(){
     console.log("Server listening on port 3000");
 })
