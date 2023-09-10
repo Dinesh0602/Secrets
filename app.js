@@ -28,8 +28,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); 
 
+//PA7L5RU43WsKSrOn
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost:27017/userDB');
+mongoose.connect('mongodb+srv://buruboyinadinesh:PA7L5RU43WsKSrOn@cluster0.pzzwimg.mongodb.net/?retryWrites=true&w=majority');
 
 const userSchema=new mongoose.Schema({
     email:String,
@@ -62,7 +63,6 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
    
     User.findOrCreate({ googleId: profile.id },{name:profile.displayName}, function (err, user) {
         console.log(user);
